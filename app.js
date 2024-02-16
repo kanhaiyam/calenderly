@@ -2,6 +2,7 @@
 let createError = require('http-errors');
 let express = require('express');
 let path = require('path');
+const mongoose = require("mongoose");
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 let favicon = require('serve-favicon')
@@ -12,6 +13,11 @@ let publicRouter = require('./routes/public');
 
 let app = express();
 
+// load env
+require("dotenv").config();
+
+//connect mongo
+const db = process.env.MONGO_URI
 // setup favicon
 app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')))
 
@@ -45,3 +51,4 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+mongoose.connect(db, { useNewUrlParser: true });
