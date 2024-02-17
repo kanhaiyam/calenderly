@@ -1,10 +1,13 @@
 // routes.js
 const express = require("express");
 const router = express.Router();
+const { validateSignUpRequest } = require('../middleware/validators/validateSignUp.js'); 
 
-const home = require("../controllers/public/HomeController.js");
+const homeController = require("../controllers/public/HomeController.js");
 
-router.get("/", home.home);
-router.get("/second", home.second);
+router.get("/", homeController.home);
+router.get("/second", homeController.second);
+router.post("/sign-up", validateSignUpRequest, homeController.signUp);
+router.get("/list", homeController.list);
 
 module.exports = router;

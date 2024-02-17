@@ -16,8 +16,6 @@ let app = express();
 // load env
 require("dotenv").config();
 
-//connect mongo
-const db = process.env.MONGO_URI
 // setup favicon
 app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')))
 
@@ -35,20 +33,31 @@ app.use('/admin', adminRouter);
 app.use('/', publicRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+app.use(function (req, res, next) {
+	next(createError(404));
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    //pass error to the next matching route.
+    next(err);
+});
+
+// handle error, print stacktrace
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+
+    res.render('error', {
+        message: err.message,
+        error: err
+    });
 });
 
 module.exports = app;
+//connect mongo
+const db = process.env.MONGO_URI
+console.log(db);
 mongoose.connect(db, { useNewUrlParser: true });
