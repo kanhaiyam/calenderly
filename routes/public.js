@@ -8,6 +8,6 @@ const homeController = require("../controllers/public/HomeController.js");
 router.get("/", homeController.home);
 router.get("/second", homeController.second);
 router.post("/sign-up", validateSignUpRequest, homeController.signUp);
-router.get("/list", homeController.list);
+router.get("/list/:_id?", homeController.list);
 
 module.exports = router;

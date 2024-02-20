@@ -58,9 +58,11 @@ module.exports = {
 		}
 	},
 
-	list :async (req, res) => {
-		const users = await UserModel.find({});
-        res.json(users);
+	list: async (req, res) => {
+		if (typeof req.params._id !== 'undefined') {
+			users = await UserModel.findById(req.params._id);
+		} else users = await UserModel.find();
+        return res.json({"users": users});
 	},
 
 	home: (req, res) => {
